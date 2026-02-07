@@ -30,11 +30,8 @@ async function runSetup(bot) {
   bot.activateItem()
   bot.swingArm('right')
   console.log('5. slota tık atıldı.')
-  await sleep(3000)
+  await sleep(5000)
 
-  console.log('Menü bekleniyor...')
-  const win = await oncePromise(bot, 'windowOpen')
-  console.log('Menü açıldı:', win.title)
 
   // 24. slot
   bot.clickWindow(23, 0, 0)
@@ -90,3 +87,4 @@ function startBot() {
 }
 
 startBot()
+
