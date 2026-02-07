@@ -10,6 +10,10 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+function oncePromise(emitter, event) {
+  return new Promise(resolve => emitter.once(event, resolve))
+}
+
 async function runSetup(bot) {
   console.log('Setup başlıyor...')
   await sleep(3000)
@@ -25,12 +29,12 @@ async function runSetup(bot) {
 
   bot.activateItem()
   bot.swingArm('right')
-  console.log('5. slota sağ + sol tık atıldı.')
+  console.log('5. slota tık atıldı.')
   await sleep(3000)
 
-  // pencere açılmasını bekle
-  const window = await bot.once('windowOpen')
-  console.log('Menü açıldı.')
+  console.log('Menü bekleniyor...')
+  const win = await oncePromise(bot, 'windowOpen')
+  console.log('Menü açıldı:', win.title)
 
   // 24. slot
   bot.clickWindow(23, 0, 0)
@@ -53,9 +57,9 @@ function startBot() {
     console.log('Sunucuya girildi.')
     try {
       await runSetup(bot)
-      console.log('Konsoldan yaz → oyuna gider 👇')
+      console.log('Hazır. Konsoldan yaz → oyuna gider 👇')
     } catch (e) {
-      console.log('Setup hata verdi:', e.message)
+      console.log('Setup patladı:', e.message)
     }
   })
 
@@ -70,26 +74,19 @@ function startBot() {
     console.log(`[CHAT] ${username}: ${message}`)
   })
 
-  bot.on('message', (jsonMsg) => {
-    console.log('[MSG]', jsonMsg.toString())
-  })
-
   bot.on('error', err => {
     console.log('Hata:', err.message)
   })
 
   bot.on('kicked', reason => {
-    console.log('Kick yedi. Sebep:', reason)
+    console.log('Kick yedi:', reason)
   })
 
-  bot.on('end', async (reason) => {
-    console.log('Bağlantı koptu:', reason || 'bilinmiyor')
-    console.log('3 saniye sonra yeniden bağlanıyor...')
+  bot.on('end', async () => {
+    console.log('Bağlantı koptu. 3 saniye sonra tekrar...')
     await sleep(3000)
     startBot()
   })
 }
 
 startBot()
-
-
