@@ -45,7 +45,7 @@ async function runSetup(bot) {
 function startBot() {
   const bot = mineflayer.createBot({
     host: 'zurnacraft.net',
-    username: 'ytufgeasx2',
+    username: 'salbeni',
     version: false
   })
 
@@ -91,3 +91,4 @@ function startBot() {
 }
 
 startBot()
+
