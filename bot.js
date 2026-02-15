@@ -20,11 +20,11 @@ function startBot() {
 
   bot.once('spawn', async () => {
     console.log('Sunucuya girildi.')
-    await sleep(3000)
+    await sleep(5000)
 
     bot.chat('/login benbitben')
     console.log('Login atıldı')
-    await sleep(3000)
+    await sleep(5000)
 
     // 5. slot
     bot.setQuickBarSlot(4)
@@ -84,3 +84,4 @@ function startBot() {
 }
 
 startBot()
+
